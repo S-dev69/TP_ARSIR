@@ -1,0 +1,3 @@
+On utilise UDP car il est direct et sans connexion.
+Comme on cherche à mesurer un temps de trajet précis, on évite TCP :
+ses mécanismes de vérification rajouteraient des petits retards aléatoires qui fausseraient complètement nos chronos.
