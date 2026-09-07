@@ -83,15 +83,15 @@ public class Client {
                 }
                 // Fin de partie
                 else if (message.equals("VICTORY")) {
-                    System.out.println("\n🎉 BRAVO ! Vous avez gagné la partie !");
+                    System.out.println("\n BRAVO ! Vous avez gagné la partie !");
                     break;
                 }
                 else if (message.equals("DEFEAT")) {
-                    System.out.println("\n❌ DOMMAGE ! L'adversaire a gagné.");
+                    System.out.println("\n DOMMAGE ! L'adversaire a gagné.");
                     break;
                 }
                 else if (message.equals("DRAW")) {
-                    System.out.println("\n🤝 EGALITÉ ! La grille est pleine.");
+                    System.out.println("\n EGALITÉ ! La grille est pleine.");
                     break;
                 }
                 else if (message.equals("QUIT")) {
