@@ -39,4 +39,23 @@ public class Jeu {
         }
         return sb.toString();
     }
+
+    public synchronized boolean aGagne(char s) {
+        // Lignes, colonnes et diagonales
+        for (int i = 0; i < 3; i++) {
+            if ((grille[i][0] == s && grille[i][1] == s && grille[i][2] == s) ||
+                    (grille[0][i] == s && grille[1][i] == s && grille[2][i] == s)) return true;
+        }
+        return (grille[0][0] == s && grille[1][1] == s && grille[2][2] == s) ||
+                (grille[0][2] == s && grille[1][1] == s && grille[2][0] == s);
+    }
+
+    public synchronized boolean estPleine() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (grille[i][j] == '-') return false;
+            }
+        }
+        return true;
+    }
 }
