@@ -32,7 +32,6 @@ public class ClientFTP {
             });
             reader.start();
 
-            // thread principal
             String command;
             while ((command = clavier.readLine()) != null) {
                 out.println(command);

@@ -18,7 +18,6 @@ public class ServeurFTP {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Nouveau client connecté : " + clientSocket.getInetAddress());
 
-                // lancement d'un thread par client
                 new Thread(new ClientHandler(clientSocket)).start();
             }
         } catch (IOException e) {
