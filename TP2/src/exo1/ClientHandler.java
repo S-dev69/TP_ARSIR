@@ -21,7 +21,7 @@ class ClientHandler implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
         ) {
-            out.println("220 Bienvenue sur le serveur FTP de test");
+            out.println("220 Bienvenue sur le serveur FTP");
 
             String request;
             while ((request = in.readLine()) != null) {
