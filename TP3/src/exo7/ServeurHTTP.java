@@ -1,4 +1,4 @@
-package exo6;
+package exo7;
 
 import java.io.IOException;
 import java.net.ServerSocket;
