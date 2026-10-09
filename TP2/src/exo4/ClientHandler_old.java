@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientHandler implements Runnable {
+public class ClientHandler_old implements Runnable {
     private Socket socket;
     private String currentUser = null;
     private boolean isAuthenticated = false;
@@ -25,7 +25,7 @@ public class ClientHandler implements Runnable {
     private File dossierRacine;
     private File dossierCourant;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler_old(Socket socket) {
         this.socket = socket;
     }
 
