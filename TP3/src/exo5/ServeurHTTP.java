@@ -16,7 +16,6 @@ public class ServeurHTTP {
                     Socket clientSocket = serverSocket.accept();
                     new Thread(new ClientHandler(clientSocket)).start();
                 } catch (IOException e) {
-                    // une connexion qui échoue ne doit pas arrêter le serveur
                     System.err.println("Erreur lors de l'acceptation d'un client : " + e.getMessage());
                 }
             }

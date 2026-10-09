@@ -11,7 +11,6 @@ public class ReponseHTTP {
     private static final String VERSION = "HTTP/1.1";
     private static final String NOM_SERVEUR = "MonServeurJava";
 
-    // table de correspondance code -> message
     private static final Map<Integer, String> MESSAGES = new HashMap<>();
     static {
         MESSAGES.put(200, "OK");
@@ -21,23 +20,19 @@ public class ReponseHTTP {
         MESSAGES.put(500, "Internal Server Error");
     }
 
-    // Q1 : en-tête avec uniquement le code
     public static String genererEntete(int code) {
         return construireEntete(code, -1);
     }
 
-    // Q1 : en-tête avec code + taille du contenu (surcharge)
     public static String genererEntete(int code, int taille) {
         return construireEntete(code, taille);
     }
 
     private static String construireEntete(int code, int taille) {
-        // code inconnu -> 500
         if (!MESSAGES.containsKey(code)) {
             code = 500;
         }
 
-        // ex : lun., 24 nov. 2025 09:45:39 CET
         SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.FRANCE);
         String date = format.format(new Date());
 
@@ -50,19 +45,18 @@ public class ReponseHTTP {
             sb.append("Content-Length: ").append(taille).append("\r\n");
         }
         sb.append("Content-Type: text/html\r\n");
-        sb.append("\r\n"); // ligne vide qui termine l'en-tête
+        sb.append("\r\n");
         return sb.toString();
     }
 
-    // Q2 : réponse complète en cas d'erreur (en-tête + message + ligne vide)
     public static String genererReponseErreur(int code) {
         if (!MESSAGES.containsKey(code)) {
             code = 500;
         }
-        // message adapté : code + message associé, suivi d'une ligne vide
+
         String corps = "<html><body><h1>" + code + " " + MESSAGES.get(code)
                 + "</h1></body></html>\r\n";
-        int taille = corps.getBytes(StandardCharsets.UTF_8).length; // taille en octets
+        int taille = corps.getBytes(StandardCharsets.UTF_8).length;
 
         return genererEntete(code, taille) + corps;
     }

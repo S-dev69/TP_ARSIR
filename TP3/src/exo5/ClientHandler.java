@@ -13,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClientHandler implements Runnable {
-    // ex : GET /index.html HTTP/1.1
     private static final Pattern REQUETE = Pattern.compile("^(\\S+) (\\S+) HTTP/\\d\\.\\d$");
 
     private static final Path RACINE = trouverRacine();
@@ -32,14 +31,12 @@ public class ClientHandler implements Runnable {
             System.out.println("\n--- Requête de " + socket.getRemoteSocketAddress()
                     + " (" + Thread.currentThread().getName() + ") ---");
 
-            // première ligne : ligne de requête
             String premiereLigne = in.readLine();
             if (premiereLigne == null) {
-                return; // le client s'est déconnecté sans rien envoyer
+                return;
             }
             System.out.println(premiereLigne);
 
-            // on affiche le reste de la requête jusqu'à la ligne vide
             String ligne;
             while ((ligne = in.readLine()) != null && !ligne.isEmpty()) {
                 System.out.println(ligne);
@@ -48,7 +45,6 @@ public class ClientHandler implements Runnable {
             try {
                 traiter(premiereLigne, out);
             } catch (Exception e) {
-                // erreur interne inattendue -> 500
                 System.err.println("Erreur interne : " + e.getMessage());
                 envoyerErreur(out, 500);
             }
@@ -67,7 +63,6 @@ public class ClientHandler implements Runnable {
     private void traiter(String premiereLigne, OutputStream out) throws IOException {
         Matcher m = REQUETE.matcher(premiereLigne);
 
-        // format invalide -> 400
         if (!m.matches()) {
             envoyerErreur(out, 400);
             return;
@@ -76,7 +71,6 @@ public class ClientHandler implements Runnable {
         String methode = m.group(1);
         String chemin = m.group(2);
 
-        // méthode autorisée : GET uniquement -> sinon 405
         if (!methode.equals("GET")) {
             envoyerErreur(out, 405);
             return;
@@ -86,14 +80,12 @@ public class ClientHandler implements Runnable {
             chemin = "/index.html";
         }
 
-        // protection contre les chemins du type ../
         Path fichier = RACINE.resolve("." + chemin).normalize();
         if (!fichier.startsWith(RACINE) || !Files.isRegularFile(fichier)) {
             envoyerErreur(out, 404);
             return;
         }
 
-        // 200 : en-tête avec Content-Length, puis le contenu du fichier
         byte[] contenu = Files.readAllBytes(fichier);
         out.write(ReponseHTTP.genererEntete(200, contenu.length).getBytes(StandardCharsets.UTF_8));
         out.write(contenu);
@@ -106,11 +98,10 @@ public class ClientHandler implements Runnable {
     }
 
     private static Path trouverRacine() {
-        // on essaie plusieurs emplacements selon d'où le programme est lancé
         String[] candidats = {
-                "site_web",          // lancé depuis TP3
-                "TP3/site_web",      // lancé depuis TP_ARSIR
-                "../site_web"        // lancé depuis TP3/src
+                "site_web",
+                "TP3/site_web",
+                "../site_web"
         };
         for (String c : candidats) {
             Path p = Paths.get(c).toAbsolutePath().normalize();
@@ -118,7 +109,7 @@ public class ClientHandler implements Runnable {
                 return p;
             }
         }
-        // valeur par défaut (donnera des 404 si le dossier est introuvable)
+
         return Paths.get("site_web").toAbsolutePath().normalize();
     }
 }
